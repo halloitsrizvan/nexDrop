@@ -1,0 +1,63 @@
+{
+  "brand": "NexDrop",
+  "tagline": "Local commerce, simplified.",
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Log in",
+    "register": "Start your shop",
+    "dashboard": "Dashboard",
+    "account": "Account"
+  },
+  "hero": {
+    "title": "Everything Your Local Shop Needs to Grow Online.",
+    "subtitle": "Manage inventory, orders, customers and your storefront from one desk — built for Kerala shops and neighbourhood retail across India.",
+    "ctaShop": "Start Your Shop",
+    "ctaFeatures": "Explore Features"
+  },
+  "dashboard": {
+    "overview": "Overview",
+    "products": "Products",
+    "categories": "Categories",
+    "inventory": "Inventory",
+    "orders": "Orders",
+    "customers": "Customers",
+    "pos": "Point of Sale",
+    "coupons": "Coupons",
+    "payments": "Payments",
+    "reports": "Reports",
+    "settings": "Shop Settings",
+    "addProduct": "Add Product",
+    "save": "Save changes",
+    "search": "Search",
+    "empty": "Nothing here yet."
+  },
+  "admin": {
+    "overview": "Overview",
+    "shops": "Shops",
+    "customers": "Customers",
+    "orders": "Orders",
+    "products": "Products",
+    "subscriptions": "Subscriptions",
+    "payments": "Payments",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "account": {
+    "overview": "Overview",
+    "orders": "My Orders",
+    "wishlist": "Wishlist",
+    "addresses": "Addresses",
+    "reviews": "Reviews",
+    "profile": "Profile"
+  },
+  "common": {
+    "inStock": "In stock",
+    "lowStock": "Low stock",
+    "outOfStock": "Out of stock",
+    "pending": "Pending"
+  }
+}
