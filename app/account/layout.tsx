@@ -9,7 +9,6 @@ import {
   Store,
   LogOut,
 } from "lucide-react";
-import { LanguageSwitcher } from "@/components/language-switcher";
 
 export default async function AccountLayout({
   children,
@@ -23,18 +22,19 @@ export default async function AccountLayout({
       {/* Header */}
       <header className="border-b border-slate-200 bg-white/95 backdrop-blur px-4 sm:px-6 py-3.5">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold text-green-800 text-lg">
-            <div className="h-8 w-8 rounded-lg bg-green-800 text-white flex items-center justify-center">
+          <Link href="/" className="flex items-center gap-2.5 font-black text-slate-900 text-lg tracking-tight group">
+            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#FF5C00] to-[#E55300] text-white flex items-center justify-center shadow-xs">
               <Store className="h-4 w-4" />
             </div>
-            NexDrop
+            <span>
+              Nex<span className="text-[#FF5C00]">Drop</span>
+            </span>
           </Link>
 
           <div className="flex items-center gap-4">
             <span className="text-xs text-slate-500 hidden sm:inline">
               Signed in as <strong className="text-slate-800">{user.name ?? user.email}</strong>
             </span>
-            <LanguageSwitcher />
             <form action={logoutAction}>
               <button
                 type="submit"

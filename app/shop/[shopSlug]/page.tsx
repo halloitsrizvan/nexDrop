@@ -13,9 +13,10 @@ export default async function ShopHomePage({
 
   const shop = await prisma.shop.findUnique({
     where: { slug: shopSlug },
+    include: { settings: true },
   });
 
-  if (!shop || shop.status !== "ACTIVE") {
+  if (!shop || shop.status === "SUSPENDED" || shop.status === "REJECTED") {
     notFound();
   }
 
@@ -55,6 +56,13 @@ export default async function ShopHomePage({
       products={products}
       categories={categories}
       isLoggedIn={!!session?.user}
+      deliveryCharge={Number(shop.settings?.deliveryCharge ?? 40)}
+      freeDeliveryAbove={
+        shop.settings?.freeDeliveryAbove
+          ? Number(shop.settings.freeDeliveryAbove)
+          : null
+      }
+      minOrderValue={Number(shop.settings?.minOrderValue ?? 0)}
     />
   );
 }

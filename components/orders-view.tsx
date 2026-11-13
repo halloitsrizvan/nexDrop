@@ -84,73 +84,63 @@ export function OrdersView({ orders }: { orders: OrderItemSummary[] }) {
         </div>
       </div>
 
-      {/* Orders Table */}
-      <div className="bg-white rounded-3xl border border-slate-100 shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-6 space-y-4">
+      {/* Orders Container */}
+      <div className="bg-white rounded-3xl border border-slate-100 shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-4 sm:p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="font-extrabold text-slate-900 text-lg">
+          <h2 className="font-extrabold text-slate-900 text-base sm:text-lg">
             Recent Orders ({filtered.length})
           </h2>
         </div>
 
         {filtered.length === 0 ? (
-          <div className="p-16 text-center rounded-2xl border border-dashed border-slate-200">
+          <div className="p-12 text-center rounded-2xl border border-dashed border-slate-200">
             <ShoppingBag className="h-10 w-10 text-slate-300 mx-auto mb-2" />
-            <p className="font-bold text-slate-700">No orders match the filter</p>
+            <p className="font-bold text-slate-700 text-sm">No orders match the filter</p>
             <p className="text-xs text-slate-400 mt-1">
               New orders made in-store or online will appear here in real time.
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="border-b border-slate-100 text-slate-400 text-xs">
-                  <TableHead>Order #</TableHead>
-                  <TableHead>Channel</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Items</TableHead>
-                  <TableHead>Total</TableHead>
-                  <TableHead>Payment</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filtered.map((order) => (
-                  <TableRow
-                    key={order.id}
-                    className="border-b border-slate-50 hover:bg-slate-50/70 transition-colors"
-                  >
-                    <TableCell className="font-mono font-bold text-xs text-slate-900">
-                      {order.orderNumber}
-                      <span className="block text-[10px] text-slate-400 font-sans font-normal mt-0.5">
+          <>
+            {/* Mobile Card View (shown on phones) */}
+            <div className="block sm:hidden space-y-3">
+              {filtered.map((order) => (
+                <div
+                  key={order.id}
+                  className="p-4 rounded-2xl border border-slate-100 bg-[#FAFAFC] hover:border-orange-200 transition-all space-y-3"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-mono font-bold text-xs text-slate-900 block">
+                        #{order.orderNumber}
+                      </span>
+                      <span className="text-[10px] text-slate-400 font-sans">
                         {format(new Date(order.createdAt), "dd MMM yyyy, HH:mm")}
                       </span>
-                    </TableCell>
-                    <TableCell>
-                      <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                          order.channel === "POS"
-                            ? "bg-[#FFF2EC] text-[#FF5C00]"
-                            : "bg-[#E6F7F0] text-[#00B074]"
-                        }`}
-                      >
-                        {order.channel}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-xs font-semibold text-slate-800">
-                      {order.customerName}
-                    </TableCell>
-                    <TableCell className="text-xs font-mono text-slate-500">
-                      {order.itemCount} items
-                    </TableCell>
-                    <TableCell className="font-mono font-black text-xs text-slate-900">
+                    </div>
+                    <span
+                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                        order.channel === "POS"
+                          ? "bg-[#FFF2EC] text-[#FF5C00]"
+                          : "bg-[#E6F7F0] text-[#00B074]"
+                      }`}
+                    >
+                      {order.channel}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs">
+                    <div>
+                      <span className="font-bold text-slate-800 block">{order.customerName}</span>
+                      <span className="text-slate-400 font-mono text-[11px]">{order.itemCount} items &bull; {order.paymentMethod}</span>
+                    </div>
+                    <span className="font-mono font-black text-sm text-slate-900">
                       {formatInr(order.total)}
-                    </TableCell>
-                    <TableCell className="text-[11px] font-medium text-slate-500">
-                      {order.paymentMethod}
-                    </TableCell>
-                    <TableCell>
+                    </span>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between">
+                    <div>
                       {order.status === "DELIVERED" ? (
                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#E6F7F0] text-[#00B074]">
                           Delivered
@@ -164,25 +154,108 @@ export function OrdersView({ orders }: { orders: OrderItemSummary[] }) {
                           {order.status}
                         </span>
                       )}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="rounded-xl h-8 text-xs font-bold text-slate-600 hover:text-[#FF5C00]"
-                        asChild
-                      >
-                        <Link href={`/dashboard/orders/${order.id}`}>
-                          View Details
-                          <ChevronRight className="h-3.5 w-3.5 ml-1" />
-                        </Link>
-                      </Button>
-                    </TableCell>
+                    </div>
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-3 rounded-lg text-xs font-bold text-slate-700 hover:text-[#FF5C00]"
+                      asChild
+                    >
+                      <Link href={`/dashboard/orders/${order.id}`}>
+                        <span>Details</span>
+                        <ChevronRight className="h-3.5 w-3.5 ml-1" />
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table View (shown on sm and above) */}
+            <div className="hidden sm:block overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-slate-100 text-slate-400 text-xs">
+                    <TableHead>Order #</TableHead>
+                    <TableHead>Channel</TableHead>
+                    <TableHead>Customer</TableHead>
+                    <TableHead>Items</TableHead>
+                    <TableHead>Total</TableHead>
+                    <TableHead>Payment</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Action</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+                </TableHeader>
+                <TableBody>
+                  {filtered.map((order) => (
+                    <TableRow
+                      key={order.id}
+                      className="border-b border-slate-50 hover:bg-slate-50/70 transition-colors"
+                    >
+                      <TableCell className="font-mono font-bold text-xs text-slate-900">
+                        {order.orderNumber}
+                        <span className="block text-[10px] text-slate-400 font-sans font-normal mt-0.5">
+                          {format(new Date(order.createdAt), "dd MMM yyyy, HH:mm")}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <span
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                            order.channel === "POS"
+                              ? "bg-[#FFF2EC] text-[#FF5C00]"
+                              : "bg-[#E6F7F0] text-[#00B074]"
+                          }`}
+                        >
+                          {order.channel}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-xs font-semibold text-slate-800">
+                        {order.customerName}
+                      </TableCell>
+                      <TableCell className="text-xs font-mono text-slate-500">
+                        {order.itemCount} items
+                      </TableCell>
+                      <TableCell className="font-mono font-black text-xs text-slate-900">
+                        {formatInr(order.total)}
+                      </TableCell>
+                      <TableCell className="text-[11px] font-medium text-slate-500">
+                        {order.paymentMethod}
+                      </TableCell>
+                      <TableCell>
+                        {order.status === "DELIVERED" ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#E6F7F0] text-[#00B074]">
+                            Delivered
+                          </span>
+                        ) : order.status === "CANCELLED" ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-50 text-red-500">
+                            Cancelled
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#FFF2EC] text-[#FF5C00]">
+                            {order.status}
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="rounded-xl h-8 text-xs font-bold text-slate-600 hover:text-[#FF5C00]"
+                          asChild
+                        >
+                          <Link href={`/dashboard/orders/${order.id}`}>
+                            View Details
+                            <ChevronRight className="h-3.5 w-3.5 ml-1" />
+                          </Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </>
         )}
       </div>
     </div>

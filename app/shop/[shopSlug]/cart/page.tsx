@@ -12,7 +12,7 @@ export default async function ShopCartPage({
   const session = await auth();
 
   if (!session?.user) {
-    redirect(`/login?callbackUrl=/shop/${shopSlug}/cart`);
+    redirect(`/shop/${shopSlug}?openCart=true`);
   }
 
   const shop = await prisma.shop.findUnique({

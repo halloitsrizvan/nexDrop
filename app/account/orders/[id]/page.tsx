@@ -84,7 +84,7 @@ export default async function CustomerOrderDetailPage({
           <Card>
             <CardHeader>
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                <Clock className="h-4 w-4 text-green-700" />
+                <Clock className="h-4 w-4 text-[#FF5C00]" />
                 Delivery Tracking
               </CardTitle>
             </CardHeader>
@@ -95,7 +95,7 @@ export default async function CustomerOrderDetailPage({
                     key={h.id}
                     className="flex items-start gap-3 relative pb-3 border-l-2 border-slate-200 pl-4 last:pb-0"
                   >
-                    <div className="absolute -left-[7px] top-0 h-3 w-3 rounded-full bg-green-700 ring-4 ring-white" />
+                    <div className="absolute -left-[7px] top-0 h-3 w-3 rounded-full bg-[#FF5C00] ring-4 ring-white" />
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-slate-900 text-xs">{h.status}</span>
@@ -162,7 +162,7 @@ export default async function CustomerOrderDetailPage({
                 {Number(order.discount) > 0 && (
                   <div className="flex justify-between text-slate-600">
                     <span>Discount</span>
-                    <span className="font-mono text-green-700">
+                    <span className="font-mono text-[#00B074]">
                       -{formatInr(Number(order.discount))}
                     </span>
                   </div>
@@ -177,7 +177,7 @@ export default async function CustomerOrderDetailPage({
                 </div>
                 <div className="flex justify-between font-bold text-sm text-slate-900 pt-2 border-t border-slate-200">
                   <span>Total Amount</span>
-                  <span className="text-green-800 font-mono font-bold">
+                  <span className="text-[#FF5C00] font-mono font-bold">
                     {formatInr(Number(order.total))}
                   </span>
                 </div>

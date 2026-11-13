@@ -67,7 +67,7 @@ export default async function CustomerWishlistPage() {
                 </div>
                 <CardContent className="p-4 space-y-2">
                   <div className="flex items-center gap-1 text-[11px] text-slate-500">
-                    <Store className="h-3 w-3 text-green-700" />
+                    <Store className="h-3 w-3 text-[#FF5C00]" />
                     <Link
                       href={`/shop/${item.product.shop.slug}`}
                       className="hover:underline truncate"

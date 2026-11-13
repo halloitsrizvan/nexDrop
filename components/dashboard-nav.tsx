@@ -59,10 +59,10 @@ export function DashboardNav({
   return (
     <>
       {/* Mobile top bar */}
-      <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between border-b border-slate-200/80 bg-white px-4 py-3 shadow-xs">
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-xl bg-[#FF5C00] text-white flex items-center justify-center font-bold">
-            <Store className="h-4 w-4" />
+      <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between border-b border-slate-200/80 bg-white/95 backdrop-blur-md px-4 py-3 shadow-xs">
+        <div className="flex items-center gap-2.5">
+          <div className="h-9 w-9 rounded-2xl bg-gradient-to-br from-[#FF5C00] to-[#E55300] text-white flex items-center justify-center font-bold shadow-xs">
+            <Store className="h-5 w-5" />
           </div>
           <div>
             <span className="font-extrabold text-slate-900 text-sm block leading-none">{shopName}</span>
@@ -71,7 +71,7 @@ export function DashboardNav({
         </div>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-1.5 rounded-lg text-slate-600 hover:bg-slate-100"
+          className="h-10 w-10 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 flex items-center justify-center active:scale-95 transition-all"
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -81,7 +81,7 @@ export function DashboardNav({
       {/* Mobile drawer backdrop */}
       {mobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm transition-opacity"
           onClick={() => setMobileOpen(false)}
         />
       )}
@@ -89,7 +89,7 @@ export function DashboardNav({
       {/* Sidebar container (Image 2 style) */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 min-w-[16rem] max-w-[16rem] shrink-0 border-r border-slate-200/80 bg-white flex flex-col justify-between transition-transform duration-200 ease-in-out lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen shadow-[0_4px_24px_rgba(0,0,0,0.02)]",
+          "fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] lg:w-64 lg:min-w-[16rem] lg:max-w-[16rem] shrink-0 border-r border-slate-200/80 bg-white flex flex-col justify-between transition-transform duration-200 ease-in-out lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen shadow-2xl lg:shadow-[0_4px_24px_rgba(0,0,0,0.02)]",
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

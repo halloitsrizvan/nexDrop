@@ -1,23 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "NexDrop — Local commerce, simplified.",
+  title: "NexDrop — Retail Commerce Elevated",
   description:
-    "All-in-one local commerce SaaS: Point of Sale (POS), real-time inventory management, and branded online storefronts for neighborhood retail across Kerala and India.",
+    "Next-generation unified retail OS: high-speed counter POS, real-time inventory synchronization, and modern branded online storefronts for local merchants.",
 };
 
 export default async function RootLayout({
@@ -32,9 +35,9 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
+      <body className="min-h-full flex flex-col bg-[#F8FAFC] text-slate-900 selection:bg-[#FF5C00]/20 selection:text-[#FF5C00]">
         <Providers locale={locale} messages={messages}>
           {children}
         </Providers>

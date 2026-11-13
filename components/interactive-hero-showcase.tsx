@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { formatInr } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Calculator,
   LayoutDashboard,
@@ -21,460 +21,390 @@ import {
   MoreVertical,
   Download,
   Filter,
+  Sparkles,
+  Phone,
+  Check,
+  X,
+  Share2,
+  Users,
+  Bell,
+  Layers,
+  ArrowUpRight,
 } from "lucide-react";
 
-const DEMO_POS_ITEMS = [
-  {
-    id: "1",
-    name: "Classic Cheese Burger",
-    category: "Burger",
-    price: 180,
-    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80",
-    stock: 24,
-  },
-  {
-    id: "2",
-    name: "Crispy Golden Chicken",
-    category: "Chicken",
-    price: 260,
-    image: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=600&q=80",
-    stock: 18,
-  },
-  {
-    id: "3",
-    name: "Palakkadan Matta Rice 5kg",
-    category: "Grains",
-    price: 340,
-    image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=600&q=80",
-    stock: 35,
-  },
-  {
-    id: "4",
-    name: "Farm Fresh Milk 1L",
-    category: "Dairy",
-    price: 56,
-    image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80",
-    stock: 40,
-  },
-  {
-    id: "5",
-    name: "Malabar Pepper Spice 250g",
-    category: "Spices",
-    price: 195,
-    image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=600&q=80",
-    stock: 15,
-  },
-  {
-    id: "6",
-    name: "Fresh Kerala Banana Chips",
-    category: "Snacks",
-    price: 120,
-    image: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?auto=format&fit=crop&w=600&q=80",
-    stock: 50,
-  },
-];
-
 export function InteractiveHeroShowcase() {
-  const [activeTab, setActiveTab] = useState<"pos" | "dashboard" | "storefront">("pos");
-  const [posCart, setPosCart] = useState<Record<string, number>>({
-    "1": 2,
-    "2": 1,
-  });
-  const [activeCategory, setActiveCategory] = useState("All");
-
-  const updateQty = (id: string, delta: number) => {
-    setPosCart((prev) => {
-      const cur = prev[id] || 0;
-      const next = Math.max(0, cur + delta);
-      if (next === 0) {
-        const copy = { ...prev };
-        delete copy[id];
-        return copy;
-      }
-      return { ...prev, [id]: next };
-    });
-  };
-
-  const cartTotal = Object.entries(posCart).reduce((sum, [id, qty]) => {
-    const item = DEMO_POS_ITEMS.find((i) => i.id === id);
-    return sum + (item ? item.price * qty : 0);
-  }, 0);
-
-  const cartCount = Object.values(posCart).reduce((a, b) => a + b, 0);
+  const [activeTab, setActiveTab] = useState<"overview" | "pos" | "products">("overview");
+  const [radialValue, setRadialValue] = useState(67.2);
+  const [callAccepted, setCallAccepted] = useState(false);
 
   return (
-    <div className="relative mx-auto max-w-6xl">
-      {/* Glow effect behind container */}
-      <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-[#FF5C00]/20 via-[#00B074]/20 to-purple-500/20 blur-2xl opacity-60 -z-10" />
+    <div className="relative max-w-6xl mx-auto">
+      {/* Background Glow */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#FF5C00]/10 via-[#FF5C00]/5 to-transparent blur-3xl rounded-[40px] -z-10 pointer-events-none" />
 
-      {/* Outer Floating Canvas */}
-      <div className="rounded-3xl border border-slate-200/80 bg-white/95 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.06)] overflow-hidden">
-        {/* Top Control Bar with Tab Switcher */}
-        <div className="flex flex-col sm:flex-row items-center justify-between border-b border-slate-100 bg-slate-50/70 px-5 py-3.5 gap-3">
-          <div className="flex items-center gap-2">
-            <span className="h-3 w-3 rounded-full bg-red-400" />
-            <span className="h-3 w-3 rounded-full bg-amber-400" />
-            <span className="h-3 w-3 rounded-full bg-emerald-400" />
-            <span className="ml-2 font-mono text-xs font-semibold text-slate-400">
-              nexdrop-os v2.4 // live interactive preview
-            </span>
+      {/* Floating Micro-Card Left: Customer Call / Lead (from reference image) */}
+      <div className="hidden xl:block absolute -left-12 top-24 z-20 w-52 bg-white rounded-2xl p-3.5 border border-slate-100 shadow-[0_12px_36px_rgba(0,0,0,0.08)] animate-float">
+        <div className="bg-[#FF5C00] text-white text-[10px] font-bold px-2.5 py-1 rounded-xl mb-2 flex items-center justify-between">
+          <span>Customer Order</span>
+          <span className="h-1.5 w-1.5 rounded-full bg-white animate-ping" />
+        </div>
+        <div className="flex items-center gap-2.5 mb-3">
+          <div className="h-9 w-9 rounded-full bg-orange-100 text-[#FF5C00] font-black text-xs flex items-center justify-center shrink-0 border border-orange-200">
+            BJ
+          </div>
+          <div>
+            <h5 className="font-extrabold text-xs text-slate-900 leading-none">Brenda Johnson</h5>
+            <span className="text-[10px] font-medium text-slate-400 mt-0.5 block">VIP &bull; Matta Rice 5kg</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => setCallAccepted(true)}
+            className={`flex-1 py-1.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1 transition-all ${
+              callAccepted
+                ? "bg-[#00B074] text-white"
+                : "bg-[#FF5C00] hover:bg-[#E55300] text-white shadow-xs"
+            }`}
+          >
+            <Check className="h-3 w-3" />
+            {callAccepted ? "Accepted" : "Accept"}
+          </button>
+          <button
+            onClick={() => setCallAccepted(false)}
+            className="h-7 w-7 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      </div>
+
+      {/* Floating Micro-Card Right: Sales Target (from reference image) */}
+      <div className="hidden xl:block absolute -right-12 top-20 z-20 w-56 bg-white rounded-2xl p-4 border border-slate-100 shadow-[0_12px_36px_rgba(0,0,0,0.08)]">
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="text-[11px] font-extrabold text-slate-500">Sales Target by Channel</span>
+          <MoreVertical className="h-3.5 w-3.5 text-slate-300" />
+        </div>
+        <div className="flex items-baseline gap-2 mb-3">
+          <span className="text-xl font-black text-slate-900 font-mono">$21,480</span>
+          <span className="text-[10px] font-bold text-[#00B074] bg-emerald-50 px-1.5 py-0.5 rounded-md">+18.4%</span>
+        </div>
+        {/* Stream progress bars matching image */}
+        <div className="space-y-2 text-[10px] font-semibold text-slate-500">
+          <div>
+            <div className="flex justify-between mb-1">
+              <span>POS In-Store</span>
+              <span className="font-bold text-slate-900">70%</span>
+            </div>
+            <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+              <div className="h-full bg-[#FF5C00] rounded-full" style={{ width: "70%" }} />
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-between mb-1">
+              <span>Online WhatsApp</span>
+              <span className="font-bold text-slate-900">50%</span>
+            </div>
+            <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+              <div className="h-full bg-slate-800 rounded-full" style={{ width: "50%" }} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Glass Canvas Container (Exact Neura Hero Dashboard Style) */}
+      <div className="bg-white/95 backdrop-blur-xl rounded-[32px] border border-slate-200/90 shadow-[0_20px_60px_rgba(0,0,0,0.06)] overflow-hidden transition-all">
+        {/* Top Floating App Header inside Dashboard */}
+        <div className="border-b border-slate-100 px-5 sm:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/70">
+          <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-start">
+            {/* Neura/NexDrop Logo Pill */}
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-xl bg-[#FF5C00] text-white flex items-center justify-center font-black shadow-xs">
+                <Store className="h-4 w-4" />
+              </div>
+              <span className="font-extrabold text-slate-900 text-sm tracking-tight">NexDrop</span>
+            </div>
+
+            {/* Pill Navigation Tabs matching image */}
+            <div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-full text-xs font-bold text-slate-600">
+              <button
+                onClick={() => setActiveTab("overview")}
+                className={`px-4 py-1.5 rounded-full transition-all ${
+                  activeTab === "overview"
+                    ? "bg-white text-slate-900 shadow-xs font-black"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+              >
+                Dashboard
+              </button>
+              <button
+                onClick={() => setActiveTab("pos")}
+                className={`px-4 py-1.5 rounded-full transition-all ${
+                  activeTab === "pos"
+                    ? "bg-white text-slate-900 shadow-xs font-black"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+              >
+                POS Counter
+              </button>
+              <button
+                onClick={() => setActiveTab("products")}
+                className={`px-4 py-1.5 rounded-full transition-all ${
+                  activeTab === "products"
+                    ? "bg-white text-slate-900 shadow-xs font-black"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+              >
+                Analytics
+              </button>
+            </div>
           </div>
 
-          {/* Interactive Mode Pills */}
-          <div className="flex items-center gap-1 rounded-2xl bg-white p-1 border border-slate-200 shadow-xs text-xs font-semibold">
-            <button
-              onClick={() => setActiveTab("pos")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all ${
-                activeTab === "pos"
-                  ? "bg-[#FF5C00] text-white shadow-sm shadow-orange-500/25"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <Calculator className="h-3.5 w-3.5" />
-              Easy POS
-            </button>
-            <button
-              onClick={() => setActiveTab("dashboard")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all ${
-                activeTab === "dashboard"
-                  ? "bg-[#FF5C00] text-white shadow-sm shadow-orange-500/25"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <LayoutDashboard className="h-3.5 w-3.5" />
-              Store Manager
-            </button>
-            <button
-              onClick={() => setActiveTab("storefront")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all ${
-                activeTab === "storefront"
-                  ? "bg-[#FF5C00] text-white shadow-sm shadow-orange-500/25"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <Store className="h-3.5 w-3.5" />
-              Live Storefront
-            </button>
+          {/* Right actions matching image: Search, Avatar, + AI Assistant */}
+          <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+            <div className="relative hidden md:block">
+              <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search..."
+                className="pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200/80 rounded-full text-xs text-slate-900 font-medium w-36 focus:outline-none focus:ring-2 focus:ring-[#FF5C00]/20"
+                readOnly
+                value="Matta Rice"
+              />
+            </div>
+
+            <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+              <Bell className="h-4 w-4" />
+            </div>
+
+            <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-amber-200 to-orange-400 p-0.5 flex items-center justify-center">
+              <span className="font-extrabold text-[11px] text-slate-800">MB</span>
+            </div>
+
+            <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FF5C00] text-white text-xs font-black shadow-sm shadow-orange-500/25">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>AI Assistant</span>
+            </div>
           </div>
         </div>
 
-        {/* Tab 1: Easy POS UI (Exact inspiration from Image 1) */}
-        {activeTab === "pos" && (
-          <div className="p-4 sm:p-6 bg-[#F8FAFC]">
-            {/* Top Bar of POS */}
-            <div className="flex items-center justify-between bg-white rounded-2xl p-3 px-5 border border-slate-200/60 shadow-xs mb-4">
-              <div className="flex items-center gap-3">
-                <span className="text-lg font-black tracking-tight text-slate-900">
-                  Easy <span className="text-[#FF5C00]">POS</span>
-                </span>
-                <span className="hidden md:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#00B074] text-xs font-semibold border border-emerald-100">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#00B074] animate-pulse" />
-                  Terminal Online
-                </span>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="hidden sm:flex items-center gap-4 text-xs font-semibold text-slate-500">
-                  <span className="text-slate-800">Dashboard</span>
-                  <span>Order List</span>
-                  <span>History</span>
-                  <span>Bills</span>
-                </div>
-                <div className="flex items-center gap-2 bg-[#FF5C00] text-white px-4 py-2 rounded-full font-bold text-xs shadow-sm shadow-orange-500/20">
-                  <span>New Order ({cartCount})</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Category Filter Chips & Search Bar */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mb-5">
-              <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 text-xs">
-                {["All", "Burger", "Chicken", "Grains", "Dairy", "Spices", "Snacks"].map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveCategory(cat)}
-                    className={`px-4 py-2 rounded-full font-semibold whitespace-nowrap transition-all ${
-                      activeCategory === cat
-                        ? "bg-[#FF5C00] text-white shadow-xs"
-                        : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-
-              <div className="relative w-full sm:w-64 shrink-0">
-                <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-400" />
-                <input
-                  type="text"
-                  placeholder="Search item or SKU..."
-                  className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-[#FF5C00]/20"
-                />
-              </div>
-            </div>
-
-            {/* Grid of Product Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
-              {DEMO_POS_ITEMS.filter(
-                (i) => activeCategory === "All" || i.category === activeCategory
-              ).map((item) => {
-                const qty = posCart[item.id] || 0;
-                return (
-                  <div
-                    key={item.id}
-                    className="bg-white rounded-2xl p-3 border border-slate-200/70 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
-                  >
-                    <div className="aspect-square rounded-xl bg-slate-50 overflow-hidden mb-2 relative">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-
-                    <div>
-                      <h4 className="font-bold text-slate-900 text-xs line-clamp-1">
-                        {item.name}
-                      </h4>
-                      <p className="text-[11px] font-bold text-[#FF5C00] font-mono mt-0.5">
-                        ₹{item.price}
-                      </p>
-                    </div>
-
-                    {/* Quantity Selector with Orange Buttons */}
-                    <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between">
-                      <button
-                        onClick={() => updateQty(item.id, -1)}
-                        className="h-6 w-6 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold flex items-center justify-center text-xs"
-                      >
-                        -
-                      </button>
-                      <span className="font-mono text-xs font-bold text-slate-900">
-                        {qty}
-                      </span>
-                      <button
-                        onClick={() => updateQty(item.id, 1)}
-                        className="h-6 w-6 rounded-lg bg-[#FF5C00] hover:bg-[#E55300] text-white font-bold flex items-center justify-center text-xs shadow-xs"
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Bottom Register Checkout Bar */}
-            <div className="mt-4 bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-xl bg-orange-50 text-[#FF5C00] flex items-center justify-center font-bold">
-                  <Receipt className="h-5 w-5" />
-                </div>
+        {/* Dashboard Canvas Body (Exact reproduction of Neura Image widgets) */}
+        <div className="p-5 sm:p-8 bg-[#FAFAFC]">
+          {activeTab === "overview" && (
+            <div className="space-y-6">
+              {/* Header Greeting inside Canvas */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <span className="text-xs font-bold text-slate-900 block">
-                    Current Register Total: <span className="font-mono text-base text-[#FF5C00] font-extrabold">{formatInr(cartTotal)}</span>
-                  </span>
-                  <span className="text-[11px] text-slate-500">
-                    {cartCount} items queued &bull; Stock will deduct instantly via PostgreSQL transaction
-                  </span>
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                    Sales Overview & Counter Metrics
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Real-time synchronization between in-store POS register and online storefront
+                  </p>
                 </div>
-              </div>
 
-              <div className="flex items-center gap-2">
-                <Link
-                  href="/login"
-                  className="px-5 py-2 rounded-xl bg-[#FF5C00] hover:bg-[#E55300] text-white font-bold text-xs shadow-sm shadow-orange-500/20 flex items-center gap-1.5 transition-all"
-                >
-                  <span>Open Full POS Terminal</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tab 2: Grocery Store Manager Dashboard (Exact inspiration from Image 2) */}
-        {activeTab === "dashboard" && (
-          <div className="p-4 sm:p-6 bg-[#F8FAFC]">
-            {/* Top Bar with Merchant Greetings */}
-            <div className="flex items-center justify-between mb-5">
-              <div>
-                <h3 className="text-lg font-black text-slate-900">Misa Bosle</h3>
-                <p className="text-xs text-slate-400">Let&apos;s see an overview</p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button className="h-8 w-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500">
-                  <Search className="h-3.5 w-3.5" />
-                </button>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FF5C00] text-white text-xs font-bold shadow-xs">
-                  <Download className="h-3.5 w-3.5" />
-                  <span>Download Report</span>
-                </div>
-              </div>
-            </div>
-
-            {/* 4 Colorful KPI Cards (Image 2 style) */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 mb-5">
-              {/* Green Card: Total Orders */}
-              <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs relative">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="h-8 w-8 rounded-xl bg-emerald-100 text-[#00B074] flex items-center justify-center">
-                    <CheckCircle2 className="h-4 w-4" />
-                  </div>
-                  <MoreVertical className="h-4 w-4 text-slate-300" />
-                </div>
-                <span className="text-xs font-bold text-slate-500 block">Total Orders</span>
-                <span className="text-2xl font-black text-slate-900 font-mono mt-0.5 block">526</span>
-                <span className="text-[10px] font-bold text-emerald-600 mt-1 block">
-                  +14% to last month
-                </span>
-              </div>
-
-              {/* Purple Card: Total Revenue */}
-              <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs relative">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="h-8 w-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center">
-                    <TrendingUp className="h-4 w-4" />
-                  </div>
-                  <MoreVertical className="h-4 w-4 text-slate-300" />
-                </div>
-                <span className="text-xs font-bold text-slate-500 block">Total Revenue</span>
-                <span className="text-2xl font-black text-slate-900 font-mono mt-0.5 block">₹84,250</span>
-                <span className="text-[10px] font-bold text-purple-600 mt-1 block">
-                  +18% to last month
-                </span>
-              </div>
-
-              {/* Orange Card: Pending Orders */}
-              <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs relative">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="h-8 w-8 rounded-xl bg-orange-100 text-[#FF5C00] flex items-center justify-center">
-                    <Clock className="h-4 w-4" />
-                  </div>
-                  <MoreVertical className="h-4 w-4 text-slate-300" />
-                </div>
-                <span className="text-xs font-bold text-slate-500 block">Pending Orders</span>
-                <span className="text-2xl font-black text-[#FF5C00] font-mono mt-0.5 block">14</span>
-                <span className="text-[10px] font-bold text-orange-600 mt-1 block">
-                  Ready for packing
-                </span>
-              </div>
-
-              {/* Red Card: Low Stock Alerts */}
-              <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs relative">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="h-8 w-8 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
-                    <AlertTriangle className="h-4 w-4" />
-                  </div>
-                  <MoreVertical className="h-4 w-4 text-slate-300" />
-                </div>
-                <span className="text-xs font-bold text-slate-500 block">Low Stock Alerts</span>
-                <span className="text-2xl font-black text-red-600 font-mono mt-0.5 block">3</span>
-                <span className="text-[10px] font-bold text-red-600 mt-1 block">
-                  Need reorder soon
-                </span>
-              </div>
-            </div>
-
-            {/* Top Selling Products Table (Image 2 style) */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-4">
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="font-bold text-sm text-slate-900">Top Selling Products</h4>
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-200 text-[11px] text-slate-600 font-medium">
-                    <Filter className="h-3 w-3" />
-                    <span>Filter</span>
+                  <div className="flex -space-x-2 overflow-hidden">
+                    <div className="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-slate-200 text-[10px] font-bold flex items-center justify-center text-slate-700">NP</div>
+                    <div className="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-orange-200 text-[10px] font-bold flex items-center justify-center text-[#FF5C00]">MS</div>
+                    <div className="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-emerald-200 text-[10px] font-bold flex items-center justify-center text-[#00B074]">CD</div>
                   </div>
-                  <Link
-                    href="/dashboard/products"
-                    className="flex items-center gap-1 px-3 py-1 rounded-lg bg-[#FF5C00] text-white text-[11px] font-bold"
-                  >
-                    <Plus className="h-3 w-3" />
-                    <span>Add Products</span>
-                  </Link>
+                  <button className="px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors">
+                    + Invite Staff
+                  </button>
+                  <button className="px-3 py-1 rounded-full border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 transition-colors flex items-center gap-1">
+                    <Download className="h-3 w-3" />
+                    Download
+                  </button>
                 </div>
               </div>
 
-              <div className="overflow-x-auto text-xs">
-                <table className="w-full text-left">
-                  <thead className="bg-slate-50 text-slate-400 font-medium border-y border-slate-100">
-                    <tr>
-                      <th className="py-2 px-3">Rank</th>
-                      <th className="py-2 px-3">Product Name</th>
-                      <th className="py-2 px-3">Category</th>
-                      <th className="py-2 px-3 text-center">Units Sold</th>
-                      <th className="py-2 px-3 text-center">Stock Left</th>
-                      <th className="py-2 px-3 text-right">Revenue</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {[
-                      { rank: "01", name: "Premium Basmati Rice 5kg", cat: "Grains & Cereals", sold: 425, stock: 69, rev: "₹24,500" },
-                      { rank: "02", name: "Fresh Milk (1L)", cat: "Dairy Products", sold: 350, stock: 42, rev: "₹18,200" },
-                      { rank: "03", name: "Organic Brown Eggs (12pk)", cat: "Dairy & Poultry", sold: 322, stock: 88, rev: "₹12,400" },
-                    ].map((row, i) => (
-                      <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                        <td className="py-2.5 px-3 font-mono font-bold text-slate-400">{row.rank}</td>
-                        <td className="py-2.5 px-3 font-bold text-slate-900">{row.name}</td>
-                        <td className="py-2.5 px-3 text-slate-500">{row.cat}</td>
-                        <td className="py-2.5 px-3 text-center font-mono font-semibold text-emerald-600">{row.sold}</td>
-                        <td className="py-2.5 px-3 text-center font-mono font-semibold text-slate-700">{row.stock}</td>
-                        <td className="py-2.5 px-3 text-right font-mono font-bold text-slate-900">{row.rev}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tab 3: Storefront Preview */}
-        {activeTab === "storefront" && (
-          <div className="p-4 sm:p-6 bg-[#F8FAFC]">
-            <div className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs mb-4 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="h-9 w-9 rounded-xl bg-emerald-800 text-white flex items-center justify-center font-bold">
-                  <Store className="h-5 w-5" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-sm text-slate-900">Nila Provisions &bull; Storefront</h4>
-                  <p className="text-[11px] text-slate-400">Main Bazaar, Kochi &bull; Open for Home Delivery</p>
-                </div>
-              </div>
-              <Link
-                href="/shop/nila-provisions"
-                className="px-3.5 py-1.5 rounded-full bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold flex items-center gap-1.5"
-              >
-                <span>Visit Live Shop</span>
-                <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {DEMO_POS_ITEMS.slice(0, 3).map((item) => (
-                <div key={item.id} className="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs flex flex-col justify-between">
-                  <div className="aspect-video rounded-xl bg-slate-50 overflow-hidden mb-3">
-                    <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
-                  </div>
+              {/* 3 Core Data Cards (Exact Match to Image 3) */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+                {/* Widget 1: Speedometer / Radial Gauge (67.2%) */}
+                <div className="lg:col-span-4 bg-white rounded-3xl p-6 border border-slate-100 shadow-[0_4px_24px_rgba(0,0,0,0.02)] flex flex-col justify-between">
                   <div>
-                    <h5 className="font-bold text-xs text-slate-900">{item.name}</h5>
-                    <p className="text-xs font-bold text-emerald-700 font-mono mt-1">₹{item.price}</p>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">
+                        Sales Velocity
+                      </span>
+                      <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
+                        Live
+                      </span>
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 text-[#FF5C00] text-xs font-extrabold">
+                      <Sparkles className="h-3 w-3" />
+                      You&apos;re in top 15% of stores
+                    </span>
                   </div>
-                  <Link
-                    href={`/shop/nila-provisions`}
-                    className="mt-3 w-full py-1.5 rounded-xl bg-slate-900 hover:bg-emerald-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
-                  >
-                    <ShoppingCart className="h-3.5 w-3.5" />
-                    <span>Order Online (COD)</span>
-                  </Link>
+
+                  {/* SVG Segmented Radial Speedometer Gauge */}
+                  <div className="py-6 flex flex-col items-center justify-center relative">
+                    <svg viewBox="0 0 200 120" className="w-56 h-36">
+                      {/* Background Arc */}
+                      <path
+                        d="M 20 110 A 80 80 0 0 1 180 110"
+                        fill="none"
+                        stroke="#F1F5F9"
+                        strokeWidth="14"
+                        strokeLinecap="round"
+                      />
+                      {/* Segmented Gradient Arcs in Vibrant Orange */}
+                      <path
+                        d="M 20 110 A 80 80 0 0 1 145 42"
+                        fill="none"
+                        stroke="#FF5C00"
+                        strokeWidth="14"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+
+                    <div className="absolute top-16 text-center">
+                      <span className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-mono">
+                        67.2%
+                      </span>
+                      <span className="text-[11px] font-bold text-slate-400 block mt-0.5">
+                        Capacity Achieved
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span className="text-slate-500 font-medium">Daily Counter Target</span>
+                    <span className="font-mono font-bold text-slate-900">₹45,000 / ₹65,000</span>
+                  </div>
                 </div>
-              ))}
+
+                {/* Widget 2: Performance Index Bar Chart (85.2%) */}
+                <div className="lg:col-span-5 bg-white rounded-3xl p-6 border border-slate-100 shadow-[0_4px_24px_rgba(0,0,0,0.02)] flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">
+                        Performance Index
+                      </span>
+                      <span className="text-[11px] font-bold font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                        13 Apr 2026
+                      </span>
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-black text-slate-900 font-mono tracking-tight">
+                        85.2%
+                      </span>
+                      <span className="text-xs font-bold text-[#00B074]">
+                        +12.4% vs last week
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Multi-Bar Graph */}
+                  <div className="pt-6 pb-2">
+                    <div className="h-32 flex items-end justify-between gap-2 px-2">
+                      {[
+                        { day: "Mon", height: "45%", val: "₹18k" },
+                        { day: "Tue", height: "65%", val: "₹26k" },
+                        { day: "Wed", height: "85%", val: "₹34k", active: true },
+                        { day: "Thu", height: "55%", val: "₹22k" },
+                        { day: "Fri", height: "95%", val: "₹39k", active: true },
+                        { day: "Sat", height: "75%", val: "₹30k" },
+                        { day: "Sun", height: "90%", val: "₹36k" },
+                      ].map((bar, idx) => (
+                        <div key={idx} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group">
+                          <div
+                            className={`w-full max-w-[28px] rounded-t-xl transition-all duration-300 ${
+                              bar.active
+                                ? "bg-gradient-to-t from-[#FF5C00] to-amber-400 shadow-sm"
+                                : "bg-slate-100 hover:bg-slate-200"
+                            }`}
+                            style={{ height: bar.height }}
+                          />
+                          <span className="text-[10px] font-bold text-slate-400 group-hover:text-slate-800">
+                            {bar.day}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                    <span>Highest sales spike: <strong>Friday POS Counter</strong></span>
+                    <span className="text-[#00B074] font-bold">Optimal</span>
+                  </div>
+                </div>
+
+                {/* Widget 3: Conversion Rate Circular Ring (37.5%) */}
+                <div className="lg:col-span-3 bg-white rounded-3xl p-6 border border-slate-100 shadow-[0_4px_24px_rgba(0,0,0,0.02)] flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">
+                        Convert Rate
+                      </span>
+                      <MoreVertical className="h-4 w-4 text-slate-300" />
+                    </div>
+                    <span className="text-xs text-slate-500 font-medium">
+                      Storefront to completed checkout
+                    </span>
+                  </div>
+
+                  {/* Sleek Dark Circular Meter Ring from image */}
+                  <div className="py-4 flex flex-col items-center justify-center">
+                    <div className="relative h-28 w-28 rounded-full bg-slate-900 text-white flex flex-col items-center justify-center shadow-lg shadow-slate-900/10">
+                      <span className="text-2xl font-black font-mono">37.5%</span>
+                      <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">
+                        Convert Rate
+                      </span>
+                      {/* Dotted border ring */}
+                      <div className="absolute inset-1 rounded-full border-2 border-dashed border-[#FF5C00]/40 pointer-events-none" />
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-100 space-y-1 text-xs">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Total Visits</span>
+                      <span className="font-bold text-slate-800 font-mono">1,420</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400">Paid Receipts</span>
+                      <span className="font-bold text-[#00B074] font-mono">532</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+
+          {activeTab === "pos" && (
+            <div className="p-8 text-center bg-white rounded-3xl border border-slate-100 space-y-4">
+              <div className="h-14 w-14 rounded-2xl bg-[#FFF2EC] text-[#FF5C00] flex items-center justify-center mx-auto">
+                <Calculator className="h-7 w-7" />
+              </div>
+              <h4 className="text-xl font-black text-slate-900">High-Speed POS Counter Active</h4>
+              <p className="text-xs text-slate-500 max-w-md mx-auto">
+                Instant barcode search, UPI QR payments, and thermal receipt generation ready for your merchant account.
+              </p>
+              <div className="pt-2">
+                <Button variant="orange" size="sm" asChild className="rounded-full px-6 font-bold text-xs">
+                  <Link href="/login">Launch POS Terminal</Link>
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "products" && (
+            <div className="p-8 text-center bg-white rounded-3xl border border-slate-100 space-y-4">
+              <div className="h-14 w-14 rounded-2xl bg-emerald-50 text-[#00B074] flex items-center justify-center mx-auto">
+                <TrendingUp className="h-7 w-7" />
+              </div>
+              <h4 className="text-xl font-black text-slate-900">Advanced Analytics Engine</h4>
+              <p className="text-xs text-slate-500 max-w-md mx-auto">
+                Category sales velocity, SKU stock turnover, and customer retention metrics.
+              </p>
+              <div className="pt-2">
+                <Button variant="orange" size="sm" asChild className="rounded-full px-6 font-bold text-xs">
+                  <Link href="/login">View Full Analytics</Link>
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

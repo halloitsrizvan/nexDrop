@@ -100,7 +100,7 @@ export async function registerShopAction(_: unknown, formData: FormData) {
     data: {
       name: parsed.data.shopName,
       slug,
-      status: "PENDING",
+      status: "ACTIVE",
       ownerId: user.id,
       members: { create: { userId: user.id, role: "OWNER" } },
       settings: {

@@ -35,6 +35,9 @@ todos:
   - id: phase-11-verify
     content: tsc, eslint, end-to-end demo workflows
     status: completed
+  - id: phase-12-marketplace-discovery
+    content: Universal marketplace search, landing page Shop Now entry, global product catalog & multi-shop order routing
+    status: completed
 isProject: false
 ---
 
@@ -204,3 +207,18 @@ COD checkout, addresses, account orders/returns
 Admin shops, metrics, subscriptions, settings
 Marketing site, en/ml strings, responsive polish
 tsc, eslint, end-to-end demo workflows
+Universal marketplace search, landing page Shop Now entry, global product catalog & multi-shop order routing
+
+---
+
+## Phase 12 — Universal Marketplace Search, Multi-Shop Discovery & Ordering
+
+### 1. Goal & Architecture
+- **Landing Page Entry Point**: Prominent "Shop Now" pill and search icon/bar in [`app/page.tsx`](app/page.tsx) header and hero section.
+- **Global Search across Whole Shops**: Search across all active shops (`name`, `description`, `businessCategory`) and all products (`name`, `sku`, `brand`, `description`, `price`).
+- **Dedicated Marketplace Route (`/shops`)**:
+  - **Shop Directory Tab**: Grid of all approved & active stores with logo, category, address, product count, and link to storefront.
+  - **Universal Products Catalog Tab**: Aggregated live catalog from all shops with shop attribution badge (`Sold by [Shop Name]`), category filters, and quick "Add to Cart".
+- **Ordering Experience (Dual Mode)**:
+  - **Shop-Based**: Browsing & checkout directly on the shop's page (`/shop/[shopSlug]`).
+  - **Whole Products-Based**: Cross-shop marketplace cart grouping items by shop, enabling guest or authenticated checkout per shop with zero tenant conflicts.

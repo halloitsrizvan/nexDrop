@@ -58,7 +58,7 @@ export default async function CustomerOrdersPage() {
                 {orders.map((o) => (
                   <TableRow key={o.id}>
                     <TableCell className="font-mono text-xs font-bold text-slate-900">
-                      <Link href={`/account/orders/${o.id}`} className="text-green-800 hover:underline">
+                      <Link href={`/account/orders/${o.id}`} className="text-[#FF5C00] hover:underline">
                         #{o.orderNumber}
                       </Link>
                     </TableCell>

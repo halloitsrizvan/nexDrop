@@ -43,7 +43,7 @@ export default async function AccountOverviewPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-xs font-semibold text-slate-500">Total Orders</CardTitle>
-            <ShoppingBag className="h-4 w-4 text-green-700" />
+            <ShoppingBag className="h-4 w-4 text-[#FF5C00]" />
           </CardHeader>
           <CardContent>
             <span className="text-2xl font-bold text-slate-900">{orders.length}</span>

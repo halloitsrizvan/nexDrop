@@ -44,6 +44,62 @@ export async function createSubscriptionPlanAction(formData: FormData) {
   return { success: true };
 }
 
+export async function updateSubscriptionPlanAction(planId: string, formData: FormData) {
+  await requireAdmin();
+
+  const name = String(formData.get("name") ?? "").trim();
+  const slug = String(formData.get("slug") ?? "").trim().toLowerCase();
+  const priceMonthly = Number(formData.get("priceMonthly") ?? 0);
+  const description = String(formData.get("description") ?? "");
+  const featuresRaw = String(formData.get("features") ?? "");
+  const features = featuresRaw.split(",").map((f) => f.trim()).filter(Boolean);
+
+  if (!name || !slug) return { error: "Name and slug are required" };
+
+  try {
+    await prisma.subscriptionPlan.update({
+      where: { id: planId },
+      data: {
+        name,
+        slug,
+        priceMonthly,
+        description,
+        features,
+      },
+    });
+
+    revalidatePath("/admin/subscriptions");
+    revalidatePath("/#pricing");
+    return { success: true };
+  } catch (err: unknown) {
+    return { error: err instanceof Error ? err.message : "Failed to update plan" };
+  }
+}
+
+export async function deleteSubscriptionPlanAction(planId: string) {
+  await requireAdmin();
+
+  try {
+    // Check if there are active subscriptions
+    const subCount = await prisma.subscription.count({
+      where: { planId, status: "ACTIVE" },
+    });
+    if (subCount > 0) {
+      return { error: `Cannot delete plan with ${subCount} active shop subscriptions.` };
+    }
+
+    await prisma.subscriptionPlan.delete({
+      where: { id: planId },
+    });
+
+    revalidatePath("/admin/subscriptions");
+    revalidatePath("/#pricing");
+    return { success: true };
+  } catch (err: unknown) {
+    return { error: err instanceof Error ? err.message : "Failed to delete plan" };
+  }
+}
+
 export async function assignShopSubscriptionAction(data: {
   shopId: string;
   planId: string;

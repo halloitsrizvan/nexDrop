@@ -156,7 +156,56 @@ export function InventoryManager({
             </div>
           </div>
 
-          <div className="overflow-x-auto">
+          {/* Mobile Card List (shown on mobile phones) */}
+          <div className="block sm:hidden space-y-3">
+            {filtered.map((item) => (
+              <div
+                key={item.id}
+                className={`p-3.5 rounded-2xl border transition-all space-y-2.5 ${
+                  selectedProduct?.id === item.id
+                    ? "bg-[#FFF2EC]/60 border-[#FFD7C2]"
+                    : "bg-[#FAFAFC] border-slate-100"
+                }`}
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h4 className="font-extrabold text-xs text-slate-900">{item.productName}</h4>
+                    <span className="text-[10px] font-mono text-slate-400">{item.sku}</span>
+                  </div>
+                  <span className="font-mono font-black text-sm text-slate-900">
+                    {item.quantity} <span className="text-[10px] text-slate-400 font-sans font-normal">units</span>
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between pt-1 border-t border-slate-200/60">
+                  {item.quantity <= 5 ? (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-50 text-red-500">
+                      Low Stock
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#E6F7F0] text-[#00B074]">
+                      In Stock
+                    </span>
+                  )}
+
+                  <Button
+                    variant={selectedProduct?.id === item.id ? "orange" : "outline"}
+                    size="sm"
+                    onClick={() => {
+                      setSelectedProduct(item);
+                      document.getElementById("adjust-panel")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="rounded-xl h-8 px-4 text-xs font-bold"
+                  >
+                    Adjust Stock
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table View (shown on sm and above) */}
+          <div className="hidden sm:block overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow className="border-b border-slate-100 text-slate-400 text-xs">
@@ -215,7 +264,7 @@ export function InventoryManager({
         </div>
 
         {/* Adjust Stock Panel (4 cols) */}
-        <div className="lg:col-span-4 bg-white rounded-3xl border border-slate-100 shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-6 space-y-4">
+        <div id="adjust-panel" className="lg:col-span-4 bg-white rounded-3xl border border-slate-100 shadow-[0_4px_24px_rgba(0,0,0,0.03)] p-6 space-y-4">
           <h3 className="font-extrabold text-slate-900 text-lg">Stock Adjustment</h3>
 
           {selectedProduct ? (

@@ -164,7 +164,7 @@ export function ProductForm({
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="sku">SKU *</Label>
+                  <Label htmlFor="sku">Stock Keeping Unit (SKU) *</Label>
                   <Input
                     id="sku"
                     name="sku"

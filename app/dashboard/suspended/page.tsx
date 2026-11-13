@@ -19,7 +19,7 @@ export default function SuspendedShopPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-slate-600">
-            Please contact support at <a href="mailto:hello@nexdrop.local" className="text-green-800 underline">hello@nexdrop.local</a> for assistance.
+            Please contact support at <a href="mailto:hello@nexdrop.local" className="text-[#FF5C00] underline font-bold">hello@nexdrop.local</a> for assistance.
           </p>
           <div className="flex justify-center gap-3">
             <form action={logoutAction}>

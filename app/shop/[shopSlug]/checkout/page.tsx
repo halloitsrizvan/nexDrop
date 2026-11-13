@@ -11,10 +11,6 @@ export default async function ShopCheckoutPage({
   const { shopSlug } = await params;
   const session = await auth();
 
-  if (!session?.user) {
-    redirect(`/login?callbackUrl=/shop/${shopSlug}/checkout`);
-  }
-
   const shop = await prisma.shop.findUnique({
     where: { slug: shopSlug },
     include: { settings: true },
@@ -24,49 +20,70 @@ export default async function ShopCheckoutPage({
     notFound();
   }
 
-  const [cart, addressesRaw] = await Promise.all([
-    prisma.cart.findUnique({
-      where: { userId_shopId: { userId: session.user.id, shopId: shop.id } },
-      include: {
-        items: {
-          include: {
-            product: true,
+  let cartItems: {
+    id: string;
+    quantity: number;
+    product: {
+      id: string;
+      name: string;
+      price: number;
+      discountPrice: number | null;
+    };
+  }[] = [];
+
+  let addresses: {
+    id: string;
+    label: string;
+    line1: string;
+    line2?: string | null;
+    city: string;
+    state: string;
+    pinCode: string;
+    phone?: string | null;
+    isDefault: boolean;
+  }[] = [];
+
+  if (session?.user) {
+    const [cart, addressesRaw] = await Promise.all([
+      prisma.cart.findUnique({
+        where: { userId_shopId: { userId: session.user.id, shopId: shop.id } },
+        include: {
+          items: {
+            include: {
+              product: true,
+            },
           },
         },
+      }),
+      prisma.address.findMany({
+        where: { userId: session.user.id },
+        orderBy: { isDefault: "desc" },
+      }),
+    ]);
+
+    cartItems = (cart?.items ?? []).map((i) => ({
+      id: i.id,
+      quantity: i.quantity,
+      product: {
+        id: i.product.id,
+        name: i.product.name,
+        price: Number(i.product.price),
+        discountPrice: i.product.discountPrice ? Number(i.product.discountPrice) : null,
       },
-    }),
-    prisma.address.findMany({
-      where: { userId: session.user.id },
-      orderBy: { isDefault: "desc" },
-    }),
-  ]);
+    }));
 
-  if (!cart || cart.items.length === 0) {
-    redirect(`/shop/${shopSlug}/cart`);
+    addresses = addressesRaw.map((a) => ({
+      id: a.id,
+      label: a.label,
+      line1: a.line1,
+      line2: a.line2,
+      city: a.city,
+      state: a.state,
+      pinCode: a.pinCode,
+      phone: a.phone,
+      isDefault: a.isDefault,
+    }));
   }
-
-  const cartItems = cart.items.map((i) => ({
-    id: i.id,
-    quantity: i.quantity,
-    product: {
-      id: i.product.id,
-      name: i.product.name,
-      price: Number(i.product.price),
-      discountPrice: i.product.discountPrice ? Number(i.product.discountPrice) : null,
-    },
-  }));
-
-  const addresses = addressesRaw.map((a) => ({
-    id: a.id,
-    label: a.label,
-    line1: a.line1,
-    line2: a.line2,
-    city: a.city,
-    state: a.state,
-    pinCode: a.pinCode,
-    phone: a.phone,
-    isDefault: a.isDefault,
-  }));
 
   return (
     <StorefrontCheckoutView
@@ -80,6 +97,7 @@ export default async function ShopCheckoutPage({
           ? Number(shop.settings.freeDeliveryAbove)
           : null
       }
+      isLoggedIn={!!session?.user}
     />
   );
 }

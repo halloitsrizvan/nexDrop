@@ -30,24 +30,35 @@ export function AdminNav({ adminEmail }: { adminEmail: string }) {
 
   return (
     <>
-      <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-purple-900 text-white flex items-center justify-center font-bold">
-            <ShieldCheck className="h-4 w-4" />
+      <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between border-b border-slate-200/80 bg-white/95 backdrop-blur-md px-4 py-3 shadow-xs">
+        <div className="flex items-center gap-2.5">
+          <div className="h-9 w-9 rounded-2xl bg-purple-900 text-white flex items-center justify-center font-bold shadow-xs">
+            <ShieldCheck className="h-5 w-5" />
           </div>
-          <span className="font-semibold text-slate-900 text-sm">NexDrop Admin</span>
+          <div>
+            <span className="font-extrabold text-slate-900 text-sm block leading-none">NexDrop Admin</span>
+            <span className="text-[10px] text-slate-400 font-mono truncate max-w-[150px] block">{adminEmail}</span>
+          </div>
         </div>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="p-1.5 rounded-md text-slate-600 hover:bg-slate-100"
+          className="h-10 w-10 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 flex items-center justify-center active:scale-95 transition-all"
+          aria-label="Toggle menu"
         >
-          {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
+      {mobileOpen && (
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm transition-opacity"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 min-w-[16rem] max-w-[16rem] shrink-0 border-r border-slate-200 bg-white flex flex-col transition-transform duration-200 lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen",
+          "fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] lg:w-64 lg:min-w-[16rem] lg:max-w-[16rem] shrink-0 border-r border-slate-200 bg-white flex flex-col transition-transform duration-200 lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen shadow-2xl lg:shadow-none",
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
