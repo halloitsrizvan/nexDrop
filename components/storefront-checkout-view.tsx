@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { PaymentMethod } from "@prisma/client";
 import { formatInr, productPrice } from "@/lib/utils";
@@ -19,11 +19,8 @@ import {
   CreditCard,
   CheckCircle2,
   AlertCircle,
-  Truck,
-  ArrowRight,
   User,
   Phone,
-  ShieldCheck,
 } from "lucide-react";
 
 interface CustomerAddress {
@@ -67,7 +64,35 @@ export function StorefrontCheckoutView({
   isLoggedIn?: boolean;
 }) {
   const router = useRouter();
-  const [cartItems, setCartItems] = useState<CartItemData[]>(initialCartItems);
+  const [cartItems] = useState<CartItemData[]>(() => {
+    if (initialCartItems && initialCartItems.length > 0) return initialCartItems;
+    if (typeof window === "undefined") return [];
+    try {
+      const stored = localStorage.getItem(`nexdrop_cart_${shopId}`);
+      if (stored) {
+        const parsed = JSON.parse(stored) as Array<{
+          id: string;
+          name: string;
+          price: number;
+          discountPrice: number | null;
+          quantity: number;
+        }>;
+        return parsed.map((item) => ({
+          id: item.id,
+          quantity: item.quantity,
+          product: {
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            discountPrice: item.discountPrice,
+          },
+        }));
+      }
+    } catch {
+      // ignore
+    }
+    return [];
+  });
   const [selectedAddressId, setSelectedAddressId] = useState<string>(
     addresses.find((a) => a.isDefault)?.id ?? addresses[0]?.id ?? ""
   );
@@ -90,38 +115,6 @@ export function StorefrontCheckoutView({
   const [newState, setNewState] = useState("Kerala");
   const [newPinCode, setNewPinCode] = useState("682001");
   const [newPhone, setNewPhone] = useState("");
-
-  // Load from local cache if guest cart items were not passed from server
-  useEffect(() => {
-    if (cartItems.length === 0) {
-      try {
-        const stored = localStorage.getItem(`nexdrop_cart_${shopId}`);
-        if (stored) {
-          const parsed = JSON.parse(stored) as Array<{
-            id: string;
-            name: string;
-            price: number;
-            discountPrice: number | null;
-            quantity: number;
-          }>;
-          setCartItems(
-            parsed.map((item) => ({
-              id: item.id,
-              quantity: item.quantity,
-              product: {
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                discountPrice: item.discountPrice,
-              },
-            }))
-          );
-        }
-      } catch {
-        // ignore
-      }
-    }
-  }, [cartItems.length, shopId]);
 
   const subtotal = cartItems.reduce((sum, item) => {
     const unit = productPrice({
